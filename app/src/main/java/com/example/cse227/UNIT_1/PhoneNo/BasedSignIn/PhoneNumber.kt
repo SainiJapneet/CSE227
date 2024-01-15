@@ -36,7 +36,7 @@ class PhoneNumber : AppCompatActivity() {
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                startActivity(Intent(applicationContext,OTP::class.java))
+                startActivity(Intent(applicationContext,PhoneNumber::class.java))
                 finish()
                 Log.d("OTP","onVerificationCompleted Success")
             }
@@ -44,7 +44,18 @@ class PhoneNumber : AppCompatActivity() {
             override fun onVerificationFailed(p0: FirebaseException) {
                 Log.d("OTP","onVerificationCompleted Failed : $p0")
             }
+
+            override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                Log.d("OTP","onCodeSent : $p0")
+                storedVerificationId = p0
+                resendToken = p1
+                val intent = Intent(applicationContext,OTP::class.java)
+                intent.putExtra("storedVerificationId",storedVerificationId)
+                startActivity(intent)
+                finish()
+            }
         }
+
     }
     fun login(){
 
