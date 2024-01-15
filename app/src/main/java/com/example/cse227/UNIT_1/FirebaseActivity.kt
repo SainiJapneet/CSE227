@@ -38,9 +38,16 @@ class FirebaseActivity : AppCompatActivity() {
             var pass = edtPassword.text.toString()
             var passRepeat = edtPasswordRepeat.text.toString()
             if (pass.equals(passRepeat)){
+                auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {
+                    if(it.isSuccessful){
+                        Toast.makeText(this,"Email Sent",Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this,"Email not sent : ${it.exception}",Toast.LENGTH_SHORT).show()
+                    }
+                }
                 auth.createUserWithEmailAndPassword(user,pass).addOnCompleteListener {
                     if (it.isSuccessful){
-                        Toast.makeText(this,"Signup successful",Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this,"Signup successful",Toast.LENGTH_SHORT).show()
                     }else {
                         Toast.makeText(this, "Error " + it.exception, Toast.LENGTH_SHORT).show()
                     }
