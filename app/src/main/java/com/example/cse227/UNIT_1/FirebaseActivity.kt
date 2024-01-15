@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.cse227.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
 
 class FirebaseActivity : AppCompatActivity() {
     lateinit var auth : FirebaseAuth
@@ -31,6 +32,7 @@ class FirebaseActivity : AppCompatActivity() {
         edtPassword = findViewById(R.id.edtPassword)
         edtPasswordRepeat = findViewById(R.id.edtPasswordRepeat)
         txtAccExists = findViewById(R.id.txtAccExists)
+
 
 
         btnSignUp.setOnClickListener {
