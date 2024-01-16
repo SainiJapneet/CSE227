@@ -20,18 +20,19 @@
             android:exported="false" />
         <activity
             android:name=".UNIT_1.PhoneNo.BasedSignIn.PhoneNumber"
-            android:exported="false" />
-        <activity
-            android:name=".UNIT_1.FirebaseSignIn"
-            android:exported="false" />
-        <activity
-            android:name=".UNIT_1.FirebaseActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".UNIT_1.FirebaseSignIn"
+            android:exported="false" />
+        <activity
+            android:name=".UNIT_1.FirebaseActivity"
+            android:exported="false">
         </activity>
     </application>
 
