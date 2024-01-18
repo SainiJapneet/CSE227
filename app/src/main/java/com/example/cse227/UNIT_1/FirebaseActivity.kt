@@ -9,13 +9,18 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.cse227.R
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.database
 
 class FirebaseActivity : AppCompatActivity() {
     lateinit var auth : FirebaseAuth
+    lateinit var db: DatabaseReference
 
     lateinit var btnSignUp: Button
+    lateinit var edtUname: EditText
     lateinit var edtEmail: EditText
     lateinit var edtPassword: EditText
     lateinit var edtPasswordRepeat: EditText
@@ -25,9 +30,12 @@ class FirebaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firebase)
         auth = FirebaseAuth.getInstance()
+        db= Firebase.database.reference
+        //db.child("K202").child("CSE227").setValue("UNIT_1")
 
         btnSignUp = findViewById(R.id.btnSignUp)
 
+        edtUname = findViewById(R.id.edtUname)
         edtEmail = findViewById(R.id.edtEmail)
         edtPassword = findViewById(R.id.edtPassword)
         edtPasswordRepeat = findViewById(R.id.edtPasswordRepeat)
@@ -36,8 +44,9 @@ class FirebaseActivity : AppCompatActivity() {
 
 
         btnSignUp.setOnClickListener {
-            var user = edtEmail.text.toString()
-            var pass = edtPassword.text.toString()
+            val uname = edtUname.text.trim().toString()
+            var user = edtEmail.text.trim().toString()
+            var pass = edtPassword.text.trim().toString()
             var passRepeat = edtPasswordRepeat.text.toString()
             if (pass.equals(passRepeat)){
                 auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {
@@ -49,7 +58,7 @@ class FirebaseActivity : AppCompatActivity() {
                 }
                 auth.createUserWithEmailAndPassword(user,pass).addOnCompleteListener {
                     if (it.isSuccessful){
-                        //Toast.makeText(this,"Signup successful",Toast.LENGTH_SHORT).show()
+                        db.child("Users").child(uname).setValue(pass)
                     }else {
                         Toast.makeText(this, "Error " + it.exception, Toast.LENGTH_SHORT).show()
                     }
