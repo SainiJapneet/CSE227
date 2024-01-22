@@ -44,7 +44,6 @@ class FirebaseActivity : AppCompatActivity() {
         //db.child("K202").child("CSE227").setValue("UNIT_1")
 
         btnSignUp = findViewById(R.id.btnSignUp)
-
         edtName = findViewById(R.id.edtName)
         edtContact = findViewById(R.id.edtContact)
         edtAddress = findViewById(R.id.edtAddress)
@@ -53,9 +52,8 @@ class FirebaseActivity : AppCompatActivity() {
         edtPasswordRepeat = findViewById(R.id.edtPasswordRepeat)
         txtAccExists = findViewById(R.id.txtAccExists)
 
-
-
         btnSignUp.setOnClickListener {
+
             if(edtPassword.text.trim().toString() != null && edtPasswordRepeat.text.trim().toString() != null){
                 val name = edtName.text.trim().toString()
                 val contact = edtContact.text.trim().toString()
@@ -63,7 +61,10 @@ class FirebaseActivity : AppCompatActivity() {
                 var user = edtEmail.text.trim().toString()
                 var pass = edtPassword.text.trim().toString()
                 var passRepeat = edtPasswordRepeat.text.toString()
+
                 if (pass.equals(passRepeat)){
+
+                    //Verification link
                     auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {
                         if(it.isSuccessful){
                             Toast.makeText(this,"Email Sent",Toast.LENGTH_SHORT).show()
@@ -71,6 +72,8 @@ class FirebaseActivity : AppCompatActivity() {
                             Toast.makeText(this,"Email not sent : ${it.exception}",Toast.LENGTH_SHORT).show()
                         }
                     }
+
+                    //User Creation
                     auth.createUserWithEmailAndPassword(user,pass).addOnCompleteListener {
                         if (it.isSuccessful){
                             addDataToFirebase(name,contact,address)
@@ -107,7 +110,7 @@ class FirebaseActivity : AppCompatActivity() {
         userDetail.setAddress(a)
         val positionListener = object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                db.setValue(userDetail)
+                db.child(n).setValue(userDetail)
                 Toast.makeText(applicationContext,"data added",Toast.LENGTH_SHORT).show()
             }
 
