@@ -1,5 +1,6 @@
 package com.example.cse227.UNIT_1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ class FirebaseSignIn : AppCompatActivity() {
 
     lateinit var auth: FirebaseAuth
     lateinit var btnLogIn: Button
+    lateinit var edtName1: EditText
     lateinit var edtEmail1: EditText
     lateinit var edtPassword1: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,13 +23,19 @@ class FirebaseSignIn : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         btnLogIn = findViewById(R.id.btnLogIn)
+        edtName1 = findViewById(R.id.edtName1)
         edtEmail1 = findViewById(R.id.edtEmail1)
         edtPassword1 = findViewById(R.id.edtPassword1)
 
         btnLogIn.setOnClickListener {
+            var name = edtName1.text.trim().toString()
             var user = edtEmail1.text.toString()
             var pass = edtPassword1.text.toString()
             login(user,pass,it)
+            val intent = Intent(this,UserHome::class.java)
+            intent.putExtra("name",name)
+            intent.putExtra("email",user)
+            startActivity(intent)
         }
     }
 

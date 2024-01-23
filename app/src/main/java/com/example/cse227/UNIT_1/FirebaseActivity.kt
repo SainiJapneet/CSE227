@@ -95,11 +95,10 @@ class FirebaseActivity : AppCompatActivity() {
                 edtPassword.error = "Error"
                 edtPasswordRepeat.error = "Error"
             }
-
-            txtAccExists.setOnClickListener {
-                val intent = Intent(this,FirebaseSignIn::class.java)
-                startActivity(intent)
-            }
+        }
+        txtAccExists.setOnClickListener {
+            val intent = Intent(this,FirebaseSignIn::class.java)
+            startActivity(intent)
         }
 
     }
