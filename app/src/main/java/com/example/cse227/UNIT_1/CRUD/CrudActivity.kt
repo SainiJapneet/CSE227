@@ -37,7 +37,6 @@ class CrudActivity : AppCompatActivity() {
         rcyView = findViewById(R.id.rcyView)
         var arrList = ArrayList<EmpDetails>()
         val layoutManager = LinearLayoutManager(this)
-        rcyView.layoutManager = layoutManager
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("EmpDetails")
@@ -61,6 +60,7 @@ class CrudActivity : AppCompatActivity() {
         btnRetrieve.setOnClickListener {
             databaseReference?.addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    rcyView.layoutManager = layoutManager
                     arrList.clear()
 
                     for(ep in snapshot.children){
