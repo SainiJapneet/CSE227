@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse227.R
 import com.google.firebase.database.DataSnapshot
@@ -35,6 +36,8 @@ class CrudActivity : AppCompatActivity() {
         btnRetrieve = findViewById(R.id.btnRetrieve)
         rcyView = findViewById(R.id.rcyView)
         var arrList = ArrayList<EmpDetails>()
+        val layoutManager = LinearLayoutManager(this)
+        rcyView.layoutManager = layoutManager
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("EmpDetails")
