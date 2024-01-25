@@ -38,6 +38,7 @@ class CrudActivity : AppCompatActivity() {
         var arrList = ArrayList<EmpDetails>()
         val layoutManager = LinearLayoutManager(this)
 
+        var key = 0
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("EmpDetails")
 
@@ -80,6 +81,27 @@ class CrudActivity : AppCompatActivity() {
             })
         }
 
+        EmpAdapter(arrList).setOnItemClickListener(object: EmpAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                key = 1
+                edtEmpName.setText("${arrList[position].name}")
+                edtEmpAge.setText("${arrList[position].age}")
+                edtEmpSalary.setText("${arrList[position].salary}")
+                val name = edtEmpName.text.trim().toString()
+                val age = edtEmpAge.text.trim().toString()
+                val salary = edtEmpSalary.text.trim().toString()
+                val id = arrList[position].id.toString()
+                val emp = EmpDetails(name,id,age,salary)
+                databaseReference.child(id).setValue(emp).addOnCompleteListener {
+                    Toast.makeText(this@CrudActivity,"Data updated",Toast.LENGTH_SHORT).show()
+                    edtEmpName.text.clear()
+                    edtEmpAge.text.clear()
+                    edtEmpSalary.text.clear()
+                }.addOnFailureListener {
+                    Toast.makeText(this@CrudActivity,"Update failed : $it",Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
 
 
     }
