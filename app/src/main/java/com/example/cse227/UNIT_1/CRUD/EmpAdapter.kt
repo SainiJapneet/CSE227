@@ -18,18 +18,6 @@ class EmpAdapter(var list: List<EmpDetails>):RecyclerView.Adapter<EmpAdapter.Dat
     fun setOnItemClickListener(clickListener: onItemClickListener){
         mListener = clickListener
     }
-    class DataHolder(itemView: View, clickListener: onItemClickListener): RecyclerView.ViewHolder(itemView){
-        var txtId: TextView = itemView.findViewById(R.id.txtId)
-        var txtName1: TextView = itemView.findViewById(R.id.txtName1)
-        var txtAge: TextView = itemView.findViewById(R.id.txtAge)
-        var txtSalary: TextView = itemView.findViewById(R.id.txtSalary)
-
-        init{
-            itemView.setOnClickListener {
-                clickListener.onItemClick(adapterPosition)
-            }
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataHolder {
         val inflater = LayoutInflater.from(parent.context).inflate(R.layout.emp_adapter,parent,false)
@@ -47,6 +35,17 @@ class EmpAdapter(var list: List<EmpDetails>):RecyclerView.Adapter<EmpAdapter.Dat
         holder.txtAge.text = data.age
         holder.txtSalary.text = data.salary
     }
+    class DataHolder(itemView: View, clickListener: onItemClickListener): RecyclerView.ViewHolder(itemView){
+        var txtId: TextView = itemView.findViewById(R.id.txtId)
+        var txtName1: TextView = itemView.findViewById(R.id.txtName1)
+        var txtAge: TextView = itemView.findViewById(R.id.txtAge)
+        var txtSalary: TextView = itemView.findViewById(R.id.txtSalary)
 
+        init{
+            itemView.setOnClickListener {
+                clickListener.onItemClick(adapterPosition)
+            }
+        }
+    }
 
 }

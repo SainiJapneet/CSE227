@@ -39,6 +39,7 @@ class CrudActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
 
         var key = 0
+        var empId = ""
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("EmpDetails")
 
@@ -46,16 +47,30 @@ class CrudActivity : AppCompatActivity() {
             val name = edtEmpName.text.trim().toString()
             val age = edtEmpAge.text.trim().toString()
             val salary = edtEmpSalary.text.trim().toString()
-            val id = databaseReference.push().key!!
-            val emp = EmpDetails(name,id,age,salary)
-            databaseReference.child(id).setValue(emp).addOnCompleteListener {
-                Toast.makeText(this,"data inserted",Toast.LENGTH_SHORT).show()
-                edtEmpName.text.clear()
-                edtEmpAge.text.clear()
-                edtEmpSalary.text.clear()
-            }.addOnFailureListener {
-                Toast.makeText(this,"data not inserted : $it",Toast.LENGTH_SHORT).show()
+            if(key == 0){
+                val id = databaseReference.push().key!!
+                val emp = EmpDetails(name,id,age,salary)
+                databaseReference.child(id).setValue(emp).addOnCompleteListener {
+                    Toast.makeText(this,"data inserted",Toast.LENGTH_SHORT).show()
+                    edtEmpName.text.clear()
+                    edtEmpAge.text.clear()
+                    edtEmpSalary.text.clear()
+                }.addOnFailureListener {
+                    Toast.makeText(this,"data not inserted : $it",Toast.LENGTH_SHORT).show()
+                }
+            }else if(key == 1){
+                key = 0
+                val emp = EmpDetails(name,empId,age,salary)
+                databaseReference.child(empId).setValue(emp).addOnCompleteListener {
+                    Toast.makeText(this@CrudActivity,"Data updated",Toast.LENGTH_SHORT).show()
+                    edtEmpName.text.clear()
+                    edtEmpAge.text.clear()
+                    edtEmpSalary.text.clear()
+                }.addOnFailureListener {
+                    Toast.makeText(this@CrudActivity,"Update failed : $it",Toast.LENGTH_SHORT).show()
+                }
             }
+
         }
 
         btnRetrieve.setOnClickListener {
@@ -71,8 +86,20 @@ class CrudActivity : AppCompatActivity() {
                         }
                     }
 
-                    rcyView.adapter = EmpAdapter(arrList)
+                    val myAdapter = EmpAdapter(arrList)
+                    rcyView.adapter = myAdapter
                     Log.d("onDataChange","data retrieved successfully")
+
+                    myAdapter.setOnItemClickListener(object: EmpAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            key = 1
+                            edtEmpName.setText("${arrList[position].name}")
+                            edtEmpAge.setText("${arrList[position].age}")
+                            edtEmpSalary.setText("${arrList[position].salary}")
+                            empId = arrList[position].id.toString()
+
+                        }
+                    })
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -81,27 +108,8 @@ class CrudActivity : AppCompatActivity() {
             })
         }
 
-        EmpAdapter(arrList).setOnItemClickListener(object: EmpAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-                key = 1
-                edtEmpName.setText("${arrList[position].name}")
-                edtEmpAge.setText("${arrList[position].age}")
-                edtEmpSalary.setText("${arrList[position].salary}")
-                val name = edtEmpName.text.trim().toString()
-                val age = edtEmpAge.text.trim().toString()
-                val salary = edtEmpSalary.text.trim().toString()
-                val id = arrList[position].id.toString()
-                val emp = EmpDetails(name,id,age,salary)
-                databaseReference.child(id).setValue(emp).addOnCompleteListener {
-                    Toast.makeText(this@CrudActivity,"Data updated",Toast.LENGTH_SHORT).show()
-                    edtEmpName.text.clear()
-                    edtEmpAge.text.clear()
-                    edtEmpSalary.text.clear()
-                }.addOnFailureListener {
-                    Toast.makeText(this@CrudActivity,"Update failed : $it",Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
+
+
 
 
     }
