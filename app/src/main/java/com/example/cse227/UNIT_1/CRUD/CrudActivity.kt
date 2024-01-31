@@ -22,6 +22,7 @@ class CrudActivity : AppCompatActivity() {
     lateinit var edtEmpSalary: EditText
     lateinit var btnSave: Button
     lateinit var btnRetrieve: Button
+    lateinit var btnDelete: Button
     lateinit var rcyView: RecyclerView
     lateinit var firebaseDatabase: FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
@@ -34,6 +35,7 @@ class CrudActivity : AppCompatActivity() {
         edtEmpSalary = findViewById(R.id.edtEmpSalary)
         btnSave = findViewById(R.id.btnSave)
         btnRetrieve = findViewById(R.id.btnRetrieve)
+        btnDelete = findViewById(R.id.btnDelete)
         rcyView = findViewById(R.id.rcyView)
         var arrList = ArrayList<EmpDetails>()
         val layoutManager = LinearLayoutManager(this)
@@ -43,31 +45,65 @@ class CrudActivity : AppCompatActivity() {
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("EmpDetails")
 
+        btnDelete.setOnClickListener {
+
+            if (key == 1){
+                key = 0
+                val emp = databaseReference.child(empId)
+                emp.removeValue().addOnSuccessListener {
+                    Toast.makeText(this,"Deletion successful ",Toast.LENGTH_SHORT).show()
+                    edtEmpName.setText("")
+                    edtEmpAge.setText("")
+                    edtEmpSalary.setText("")
+                }.addOnFailureListener{
+                    Toast.makeText(this,"Deletion failed : $it",Toast.LENGTH_SHORT).show()
+                }
+            }else{
+                Toast.makeText(this,"Select an employee to delete",Toast.LENGTH_SHORT).show()
+            }
+        }
+
         btnSave.setOnClickListener {
             val name = edtEmpName.text.trim().toString()
             val age = edtEmpAge.text.trim().toString()
             val salary = edtEmpSalary.text.trim().toString()
-            if(key == 0){
-                val id = databaseReference.push().key!!
-                val emp = EmpDetails(name,id,age,salary)
-                databaseReference.child(id).setValue(emp).addOnCompleteListener {
-                    Toast.makeText(this,"data inserted",Toast.LENGTH_SHORT).show()
-                    edtEmpName.text.clear()
-                    edtEmpAge.text.clear()
-                    edtEmpSalary.text.clear()
-                }.addOnFailureListener {
-                    Toast.makeText(this,"data not inserted : $it",Toast.LENGTH_SHORT).show()
+            if(name.isNotEmpty() && age.isNotEmpty() && salary.isNotEmpty() && age.toInt() > 18){
+                if(key == 0){
+                    val id = databaseReference.push().key!!
+                    val emp = EmpDetails(name,id,age,salary)
+                    databaseReference.child(id).setValue(emp).addOnCompleteListener {
+                        Toast.makeText(this,"data inserted",Toast.LENGTH_SHORT).show()
+                        edtEmpName.text.clear()
+                        edtEmpAge.text.clear()
+                        edtEmpSalary.text.clear()
+                    }.addOnFailureListener {
+                        Toast.makeText(this,"data not inserted : $it",Toast.LENGTH_SHORT).show()
+                    }
+                }else if(key == 1){
+                    key = 0
+                    val emp = EmpDetails(name,empId,age,salary)
+                    databaseReference.child(empId).setValue(emp).addOnCompleteListener {
+                        Toast.makeText(this@CrudActivity,"Data updated",Toast.LENGTH_SHORT).show()
+                        edtEmpName.text.clear()
+                        edtEmpAge.text.clear()
+                        edtEmpSalary.text.clear()
+                    }.addOnFailureListener {
+                        Toast.makeText(this@CrudActivity,"Update failed : $it",Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }else if(key == 1){
-                key = 0
-                val emp = EmpDetails(name,empId,age,salary)
-                databaseReference.child(empId).setValue(emp).addOnCompleteListener {
-                    Toast.makeText(this@CrudActivity,"Data updated",Toast.LENGTH_SHORT).show()
-                    edtEmpName.text.clear()
-                    edtEmpAge.text.clear()
-                    edtEmpSalary.text.clear()
-                }.addOnFailureListener {
-                    Toast.makeText(this@CrudActivity,"Update failed : $it",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this,"Please fill all fields",Toast.LENGTH_SHORT).show()
+                if(name.isEmpty()){
+                    edtEmpName.error = "Enter name"
+                }
+                if(age.isEmpty()){
+                    edtEmpAge.error = "Enter age"
+                }
+                if(age.isNotEmpty() && age.toInt() <= 18 ){
+                    edtEmpAge.error = "Age can't be less than 18"
+                }
+                if(salary.isEmpty()){
+                    edtEmpSalary.error = "Enter salary"
                 }
             }
 
