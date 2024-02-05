@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE227"
         tools:targetApi="31">
+
         <activity
-            android:name=".UNIT_1.Storage.UploadImage"
+            android:name=".UNIT_2.AnimationActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,16 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".UNIT_1.Storage.UploadImage"
+            android:exported="false">
+        </activity>
+
         <activity
             android:name=".Omninos.SeeAll"
             android:exported="false" />
         <activity
             android:name=".Omninos.HomeActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".UNIT_1.CRUD.CrudActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".UNIT_1.UserHome"
             android:exported="false" />

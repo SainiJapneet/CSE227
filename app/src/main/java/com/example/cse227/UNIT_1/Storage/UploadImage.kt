@@ -54,6 +54,7 @@ class UploadImage : AppCompatActivity() {
             val ref: StorageReference = FirebaseStorage.getInstance().getReference().child(UUID.randomUUID().toString())
             ref.putFile(fileUri!!).addOnSuccessListener {
                 progressDialog.dismiss()
+                imgUpload.setImageResource(0)
                 Toast.makeText(this,"Image uploaded",Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 progressDialog.dismiss()
