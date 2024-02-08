@@ -19,6 +19,8 @@ class AnimationActivity : AppCompatActivity() {
     lateinit var btnFlip: Button
     lateinit var btnZoomIn: Button
     lateinit var btnZoomOut: Button
+    lateinit var btnSequential: Button
+    lateinit var btnSlideRight: Button
     lateinit var animBlink: Animation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,8 @@ class AnimationActivity : AppCompatActivity() {
         btnSlideDown = findViewById(R.id.btnSlideDown)
         btnZoomIn = findViewById(R.id.btnZoomIn)
         btnZoomOut = findViewById(R.id.btnZoomOut)
+        btnSequential = findViewById(R.id.btnSequential)
+        btnSlideRight = findViewById(R.id.btnSlideRight)
 
         imgViewAnim.setImageResource(R.drawable.profile)
         /*
@@ -82,7 +86,14 @@ class AnimationActivity : AppCompatActivity() {
             animBlink = AnimationUtils.loadAnimation(applicationContext,R.anim.zoom_out_anim)
             imgViewAnim.startAnimation(animBlink)
         }
-
+        btnSequential.setOnClickListener {
+            animBlink = AnimationUtils.loadAnimation(applicationContext,R.anim.sequential_anim)
+            imgViewAnim.startAnimation(animBlink)
+        }
+        btnSlideRight.setOnClickListener {
+            animBlink = AnimationUtils.loadAnimation(applicationContext,R.anim.slide_right_anim)
+            imgViewAnim.startAnimation(animBlink)
+        }
 
     }
 }

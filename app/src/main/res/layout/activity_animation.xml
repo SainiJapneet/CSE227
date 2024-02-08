@@ -23,7 +23,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:text="Fade In"
-        app:layout_constraintEnd_toStartOf="@+id/btnFadeOut"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgViewAnim" />
 
@@ -35,7 +34,6 @@
         android:layout_marginEnd="32dp"
         android:text="Fade Out"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnFadeIn"
         app:layout_constraintTop_toBottomOf="@+id/imgViewAnim" />
 
     <Button
@@ -45,7 +43,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:text="Rotate"
-        app:layout_constraintEnd_toStartOf="@+id/btnBounce"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFadeIn" />
 
@@ -57,7 +54,6 @@
         android:layout_marginEnd="32dp"
         android:text="Bounce"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnRotate"
         app:layout_constraintTop_toBottomOf="@+id/btnFadeOut" />
 
     <Button
@@ -67,7 +63,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:text="Slide Up"
-        app:layout_constraintEnd_toStartOf="@+id/btnSlideDown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRotate" />
 
@@ -79,7 +74,6 @@
         android:layout_marginEnd="32dp"
         android:text="Slide down"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnSlideUp"
         app:layout_constraintTop_toBottomOf="@+id/btnBounce" />
 
     <Button
@@ -89,7 +83,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:text="Flip"
-        app:layout_constraintEnd_toStartOf="@+id/btnZoomIn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSlideUp" />
 
@@ -101,7 +94,6 @@
         android:layout_marginEnd="32dp"
         android:text="Zoom In"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnFlip"
         app:layout_constraintTop_toBottomOf="@+id/btnSlideDown" />
 
     <Button
@@ -113,6 +105,26 @@
         android:text="Zoom Out"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFlip" />
+
+    <Button
+        android:id="@+id/btnSequential"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="Sequential"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnZoomIn" />
+
+    <Button
+        android:id="@+id/btnSlideRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Slide Right"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnZoomOut" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
