@@ -20,7 +20,7 @@ class SplashScreen : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         imgSplash.setImageResource(R.drawable.img)
-        val anim = AnimationUtils.loadAnimation(this,R.anim.roatate_anim)
+        val anim = AnimationUtils.loadAnimation(this,R.anim.together_anim)
         imgSplash.startAnimation(anim)
         Handler().postDelayed({
             val intent = Intent(this, AnimationActivity::class.java)
