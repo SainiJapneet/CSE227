@@ -15,7 +15,7 @@ class NewAnimation : AppCompatActivity() {
         imgRoad = findViewById(R.id.imgRoad)
         imgCar = findViewById(R.id.imgCar)
 
-        imgRoad.setImageResource(R.drawable.road)
+        imgRoad.setImageResource(R.drawable.road2)
         imgCar.setImageResource(R.drawable.car)
         var animation = AnimationUtils.loadAnimation(this,R.anim.seq_new_anim)
         imgCar.startAnimation(animation)

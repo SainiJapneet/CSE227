@@ -13,22 +13,24 @@
         android:theme="@style/Theme.CSE227"
         tools:targetApi="31">
         <activity
-            android:name=".UNIT_2.Project.NewAnimation"
+            android:name=".UNIT_2.Canvas.CanvasActivity"
             android:exported="true" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-
+        <activity
+            android:name=".UNIT_2.Project.NewAnimation"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".UNIT_2.SplashScreen"
-            android:exported="true">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".UNIT_2.AnimationActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".UNIT_1.Storage.UploadImage"
             android:exported="false" />
