@@ -23,7 +23,7 @@ class GameView(ctx: Context): View(ctx) {
 
         val rect3 = Rect(0,canvas.height-bg.height+370,mario1.width,canvas.height)
         canvas.drawBitmap(bg,rect1,rect2,null)
-        canvas.drawBitmap(mario2,0f,(canvas.height-bg.height+480+q).toFloat(),null)
+        canvas.drawBitmap(mario2,(0+x).toFloat(),(canvas.height-bg.height+480+q).toFloat(),null)
         canvas.drawBitmap(crow,100f,(canvas.height-bg.height-400).toFloat(),null)
     }
 
