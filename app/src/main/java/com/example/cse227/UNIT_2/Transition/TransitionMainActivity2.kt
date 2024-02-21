@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import com.example.cse227.R
+import com.example.cse227.UNIT_2.Canvas.CanvasActivity
 
 class TransitionMainActivity2 : AppCompatActivity() {
     lateinit var imgTransition: ImageView
@@ -16,10 +17,11 @@ class TransitionMainActivity2 : AppCompatActivity() {
         setContentView(R.layout.activity_transition_main2)
         imgTransition = findViewById(R.id.imgTransition)
         val fade = Fade()
+        fade.duration=40000
         window.enterTransition = fade
         window.exitTransition = fade
         imgTransition.setOnClickListener {
-            val intent = Intent(this,TransitionActivity::class.java)
+            val intent = Intent(this,CanvasActivity::class.java)
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgTransition,ViewCompat.getTransitionName(imgTransition)!!)
             startActivity(intent,options.toBundle())
         }

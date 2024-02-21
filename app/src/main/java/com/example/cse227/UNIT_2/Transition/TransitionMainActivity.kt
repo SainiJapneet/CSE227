@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.cse227.R
+import com.example.cse227.UNIT_2.Canvas.CanvasActivity
 
 class TransitionMainActivity : AppCompatActivity() {
     lateinit var btnTransition: Button
@@ -13,9 +14,9 @@ class TransitionMainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_transition_main)
         btnTransition = findViewById(R.id.btnTransition)
         btnTransition.setOnClickListener {
-            var intent = Intent(this,TransitionActivity::class.java)
+            var intent = Intent(this,CanvasActivity::class.java)
             startActivity(intent)
-            overridePendingTransition(R.anim.fade_in_anim,R.anim.fade_out_anim)
+            overridePendingTransition(R.anim.slide_right_anim,R.anim.zoom_out_anim)
         }
 
     }
