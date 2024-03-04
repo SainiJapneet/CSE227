@@ -1,52 +1,46 @@
 package com.example.cse227.UNIT_3
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.speech.RecognizerIntent
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import com.example.cse227.R
-import java.lang.Exception
+import android.speech.tts.TextToSpeech
+import android.util.Log
+import com.example.cse227.databinding.ActivityText2SpeechBinding
 import java.util.Locale
 
-class Text2Speech : AppCompatActivity() {
-    private lateinit var imgMic: ImageView
-    private lateinit var txtSpeech: TextView
-    private val REQUEST_CODE_SPEECH_INPUT = 1
+class Text2Speech : AppCompatActivity(), TextToSpeech.OnInitListener {
+    lateinit var binding: ActivityText2SpeechBinding
+    private var tts: TextToSpeech? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_text2_speech)
-        imgMic = findViewById(R.id.imgMic)
-        txtSpeech = findViewById(R.id.txtSpeech)
+        binding = ActivityText2SpeechBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        tts = TextToSpeech(this,this)
+        binding.btnSpeak.isEnabled = false
+        binding.btnSpeak.setOnClickListener { speakOut() }
 
-        imgMic.setOnClickListener {
-            performListen()
-        }
-    }
-    fun performListen(){
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-            putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak to text")
-        }
-        try {
-            startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
-
-        }catch (e: Exception){
-            Toast.makeText(this,"Error : ${e.message}",Toast.LENGTH_SHORT).show()
-        }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_CODE_SPEECH_INPUT){
-            if(resultCode == RESULT_OK && data != null){
-                val result: ArrayList<String>? = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                txtSpeech!!.text = result?.get(0)
+    override fun onInit(status: Int){
+        if(status == TextToSpeech.SUCCESS){
+            val result = tts!!.setLanguage(Locale.US)
+            if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                Log.e("TTS","Language not supported!")
+            }else{
+                binding.btnSpeak.isEnabled = true
             }
         }
     }
+    private fun speakOut(){
+        val text = binding.edtSpeech!!.text.trim().toString()
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH,null,"")
+    }
+
+    override fun onDestroy() {
+        if(tts != null){
+            tts!!.stop()
+            tts!!.shutdown()
+        }
+        super.onDestroy()
+    }
+
 }

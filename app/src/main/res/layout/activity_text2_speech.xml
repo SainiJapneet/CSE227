@@ -6,26 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".UNIT_3.Text2Speech">
 
-    <TextView
-        android:id="@+id/txtSpeech"
+    <EditText
+        android:id="@+id/edtSpeech"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:hint="Enter text"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSpeak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Tap mic and speak"
-        android:textSize="24dp"
-        android:textStyle="bold"
+        android:text="Speak"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgMic" />
-
-    <ImageView
-        android:id="@+id/imgMic"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mic" />
+        app:layout_constraintTop_toBottomOf="@+id/edtSpeech" />
 </androidx.constraintlayout.widget.ConstraintLayout>
