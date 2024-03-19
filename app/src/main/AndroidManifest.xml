@@ -88,6 +88,8 @@
         <activity
             android:name=".UNIT_1.FirebaseActivity"
             android:exported="false" />
+        <service android:name=".UNIT_3.Alarm.MyJobScheduler"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
