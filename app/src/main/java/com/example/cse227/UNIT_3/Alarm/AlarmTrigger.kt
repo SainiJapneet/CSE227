@@ -2,9 +2,14 @@ package com.example.cse227.UNIT_3.Alarm
 
 import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.cse227.databinding.ActivityAlarmTriggerBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -12,6 +17,8 @@ import java.util.Locale
 
 class AlarmTrigger : AppCompatActivity() {
     lateinit var binding: ActivityAlarmTriggerBinding
+    var hour = 0
+    var minute = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAlarmTriggerBinding.inflate(layoutInflater)
@@ -36,8 +43,8 @@ class AlarmTrigger : AppCompatActivity() {
     }
     fun showDatePicker(){
         val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
+        hour = calendar.get(Calendar.HOUR_OF_DAY)
+        minute = calendar.get(Calendar.MINUTE)
         val timePickerDialog = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener { timePicker, i, i2 ->
             val time = "${i}:${i2}"
             binding.edtAlarm.setText(time)
@@ -46,12 +53,29 @@ class AlarmTrigger : AppCompatActivity() {
     }
     fun setAlarm(){
         if(!isEmpty()){
-            val time = binding.edtAlarm.text.toString().trim()
-            val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
             val calendar = Calendar.getInstance()
-            calendar.time = sdf.parse(time)
-            val alarmIntent = Intent(this, AlarmReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(this,0,alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val currentTime = calendar.timeInMillis
+            calendar.set(Calendar.HOUR_OF_DAY,hour)
+            calendar.set(Calendar.MINUTE,minute)
+            calendar.set(Calendar.SECOND,0)
+            val alarmTime = calendar.timeInMillis
+
+            val timeDifference = alarmTime - currentTime
+            val component = ComponentName(this, MyJobScheduler::class.java)
+            val builder = JobInfo.Builder(1, component)
+                .setRequiresCharging(false)
+                .setPersisted(true)
+                .setMinimumLatency(timeDifference)
+                .build()
+
+            val jobScheduler = this.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+            val resultCode = jobScheduler.schedule(builder)
+
+            if(resultCode == JobScheduler.RESULT_SUCCESS){
+                Toast.makeText(this, "Alarm scheduled", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this, "Failed to schedule alarm", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     fun getNotification(){
