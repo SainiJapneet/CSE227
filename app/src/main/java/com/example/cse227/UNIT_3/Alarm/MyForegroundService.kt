@@ -1,6 +1,8 @@
 package com.example.cse227.UNIT_3.Alarm
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.app.job.JobParameters
@@ -13,9 +15,11 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import com.example.cse227.R
 
 class MyForegroundService: Service() {
+    private var channelId = "NOTIFICATION_CHANNEL"
     lateinit var mediaPlayer: MediaPlayer
     override fun onCreate() {
         super.onCreate()
@@ -38,9 +42,22 @@ class MyForegroundService: Service() {
             if(alarmTimeInMillis!! > 0L){
                 when (action) {
                     "ACTION_START" -> {
-                        startForegroundService(intent)
+                        val notificationChannel = NotificationChannel(
+                            channelId,
+                            "Alarm Channel",
+                            NotificationManager.IMPORTANCE_HIGH
+                        )
+                        val notificationManager = getSystemService(NotificationManager::class.java)
+                        notificationManager.createNotificationChannel(notificationChannel)
+                        val notification = NotificationCompat.Builder(this, channelId)
+                            .setContentTitle("Alarm")
+                            .setContentText("Alarm is playing")
+                            .setSmallIcon(R.drawable.add_alarm)
+                            .build()
+                        val notificationId = 1
+                        startForeground(notificationId,notification)
                         Handler().postDelayed({
-                            triggerAlarm(applicationContext)
+                            triggerAlarm(this)
                         }, alarmTimeInMillis!!)
                     }
                     "ACTION_STOP" -> {
@@ -55,7 +72,7 @@ class MyForegroundService: Service() {
                     }
                 }
             }else{
-                Toast.makeText(this,"Negative alarmTime",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Negative alarmTime: ${alarmTimeInMillis}",Toast.LENGTH_SHORT).show()
             }
 
         }

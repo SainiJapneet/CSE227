@@ -28,9 +28,8 @@ class AlarmOverlayActivity : AppCompatActivity() {
     }
 
     private fun stopAlarm() {
-        val stopIntent = Intent(this, MyForegroundService::class.java)
-        stopIntent.action = "ACTION_STOP"
-        startService(stopIntent)
+        val serviceIntent = Intent(this, MyForegroundService::class.java)
+        stopService(serviceIntent)
         finish()
     }
 

@@ -1,10 +1,6 @@
 package com.example.cse227.UNIT_3.Alarm
 
 import android.app.TimePickerDialog
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,7 +19,7 @@ class AlarmSchedulerTrigger : AppCompatActivity() {
         binding = ActivityAlarmTriggerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.edtAlarm.setOnClickListener {
-            showDatePicker()
+            showTimePicker()
         }
         binding.btnSetAlarm.setOnClickListener {
             if(!isEmpty()){
@@ -40,14 +36,16 @@ class AlarmSchedulerTrigger : AppCompatActivity() {
         }
         return emp
     }
-    fun showDatePicker(){
+    fun showTimePicker(){
         val calendar = Calendar.getInstance()
-        hr = calendar.get(Calendar.HOUR_OF_DAY)
-        min = calendar.get(Calendar.MINUTE)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
         val timePickerDialog = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener { timePicker, i, i2 ->
             val time = "${i}:${i2}"
+            hr = i
+            min = i2
             binding.edtAlarm.setText(time)
-        },hr,min,true)
+        },hour,minute,true)
         timePickerDialog.show()
     }
     fun scheduleAlarm(){
@@ -56,9 +54,11 @@ class AlarmSchedulerTrigger : AppCompatActivity() {
             calendar.set(Calendar.HOUR_OF_DAY,hr)
             calendar.set(Calendar.MINUTE,min)
             calendar.set(Calendar.SECOND, 0)
-            val alarmDuration = calendar.timeInMillis
-            val currentTime = System.currentTimeMillis()
-            alarmTimeInMillis = alarmDuration - currentTime
+            if(calendar.timeInMillis > System.currentTimeMillis()) {
+                alarmTimeInMillis = calendar.timeInMillis - System.currentTimeMillis()
+            } else {
+                Toast.makeText(this, "hr : $hr, min : $min", Toast.LENGTH_SHORT).show()
+            }
             val serviceIntent = Intent(this, MyForegroundService::class.java)
             serviceIntent.putExtra("alarmTime",alarmTimeInMillis)
             serviceIntent.action = "ACTION_START"
