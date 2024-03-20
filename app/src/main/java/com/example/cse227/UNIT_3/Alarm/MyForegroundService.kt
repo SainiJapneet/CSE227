@@ -87,12 +87,16 @@ class MyForegroundService: Service() {
     }
 
     private fun stopAlarm() {
-        if(mediaPlayer.isPlaying){
-            mediaPlayer?.stop()
+        try {
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.stop()
+            }
+            mediaPlayer.release()
+            stopForeground(true)
+            stopSelf()
+        } catch (e: Exception) {
+            Log.e("Foreground Service", "Failed to stop alarm: ${e.message}")
         }
-        mediaPlayer?.release()
-        stopForeground(true)
-        stopSelf()
     }
 
     private fun snoozeAlarm(snoozeDurationMillis: Long) {

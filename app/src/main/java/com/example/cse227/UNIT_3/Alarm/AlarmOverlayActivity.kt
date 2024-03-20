@@ -31,6 +31,7 @@ class AlarmOverlayActivity : AppCompatActivity() {
 
     private fun stopAlarm() {
         val serviceIntent = Intent(this, MyForegroundService::class.java)
+        serviceIntent.action = "ACTION_STOP"
         stopService(serviceIntent)
         Log.d("AlarmOverlayActivity", "Stop intent sent to service")
         finish()
