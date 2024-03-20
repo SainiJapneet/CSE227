@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    tools:context=".UNIT_3.Alarm.OverlayActivity">
+    tools:context=".UNIT_3.Alarm.AlarmOverlayActivity">
 
     <TextView
         android:id="@+id/textView13"
