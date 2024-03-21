@@ -8,41 +8,51 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import com.example.cse227.R
 import com.example.cse227.databinding.ActivityOverlayBinding
 
 class AlarmOverlayActivity : AppCompatActivity() {
     lateinit var binding: ActivityOverlayBinding
-    val snoozeTime = 2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+        )
+
+
         binding = ActivityOverlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnStopAlarm.setOnClickListener{
-            stopAlarm()
+        binding.btnStopAlarm.setOnClickListener {
+            stopAlarm(this)
         }
-        binding.btnSnoozeAlarm.text = "snooze alarm(+${snoozeTime} min)"
+        binding.btnSnoozeAlarm.text = "Snooze Alarm(+2 min)"
         binding.btnSnoozeAlarm.setOnClickListener {
-            snoozeAlarm(snoozeTime)
+            snoozeAlarm(this,2)
         }
     }
 
-    private fun stopAlarm() {
-        val serviceIntent = Intent(this, MyForegroundService::class.java)
+    private fun stopAlarm(context: Context){
+        val serviceIntent = Intent(context, MyForegroundService::class.java)
         serviceIntent.action = "ACTION_STOP"
-        stopService(serviceIntent)
-        Log.d("AlarmOverlayActivity", "Stop intent sent to service")
+        startService(serviceIntent)
+        Toast.makeText(context,"Alarm stopped",Toast.LENGTH_SHORT).show()
         finish()
     }
 
-        private fun snoozeAlarm(time: Int) {
-        val snoozeDurationMillis = time * 60 * 1000L
-        val snoozeIntent = Intent(this, MyForegroundService::class.java)
+    private fun snoozeAlarm(context: Context, time: Int){
+
+        val snoozeDurationMillis = (time * 60 * 1000).toLong()
+        val snoozeIntent = Intent(context, MyForegroundService::class.java)
         snoozeIntent.action = "ACTION_SNOOZE"
-        snoozeIntent.putExtra("snoozeDuration", snoozeDurationMillis)
+        snoozeIntent.putExtra("snoozeTime", snoozeDurationMillis)
         startService(snoozeIntent)
+        Toast.makeText(context,"Alarm snoozed",Toast.LENGTH_SHORT).show()
         finish()
     }
 }

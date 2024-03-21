@@ -4,6 +4,7 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.cse227.databinding.ActivityAlarmTriggerBinding
@@ -24,7 +25,6 @@ class AlarmSchedulerTrigger : AppCompatActivity() {
         binding.btnSetAlarm.setOnClickListener {
             if(!isEmpty()){
                 scheduleAlarm()
-                getNotification()
             }
         }
     }
@@ -54,18 +54,23 @@ class AlarmSchedulerTrigger : AppCompatActivity() {
             calendar.set(Calendar.HOUR_OF_DAY,hr)
             calendar.set(Calendar.MINUTE,min)
             calendar.set(Calendar.SECOND, 0)
-            if(calendar.timeInMillis > System.currentTimeMillis()) {
-                alarmTimeInMillis = calendar.timeInMillis - System.currentTimeMillis()
-            } else {
-                Toast.makeText(this, "hr : $hr, min : $min", Toast.LENGTH_SHORT).show()
+            val alarmDuration = calendar.timeInMillis
+            val currentTime = System.currentTimeMillis()
+            alarmTimeInMillis = alarmDuration - currentTime
+            if(currentTime >= alarmDuration){
+                Toast.makeText(this,"Scheduled time must be greater than current time",Toast.LENGTH_SHORT).show()
+            }else{
+
+                val serviceIntent = Intent(this, MyForegroundService::class.java)
+                serviceIntent.putExtra("alarmTime",alarmTimeInMillis)
+                serviceIntent.action = "ACTION_START"
+                ContextCompat.startForegroundService(this, serviceIntent)
+                var time = String.format("%02d:%02d", hr, min)
+                Toast.makeText(this,"Alarm scheduled for  $time", Toast.LENGTH_SHORT).show()
+                Log.d("AlarmScheduler","Alarm Scheduled for  $time")
             }
-            val serviceIntent = Intent(this, MyForegroundService::class.java)
-            serviceIntent.putExtra("alarmTime",alarmTimeInMillis)
-            serviceIntent.action = "ACTION_START"
-            ContextCompat.startForegroundService(this, serviceIntent)
+
         }
     }
-    fun getNotification(){
 
-    }
 }
